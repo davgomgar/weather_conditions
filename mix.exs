@@ -5,6 +5,9 @@ defmodule WeatherConditions.Mixfile do
     [app: :weather_conditions,
      version: "0.0.1",
      elixir: "~> 1.2",
+     escript: escript_config,
+     name: "US Airport Weather Conditions",
+     source_url: "http://github.com/davgomgar/weather_conditions",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
@@ -28,7 +31,13 @@ defmodule WeatherConditions.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.8.0"}
+      httpoison: "~> 0.8.0",
+      ex_doc: "~> 0.11",
+      earmark: ">= 0.0.0"
     ]
+  end
+
+  defp escript_config do
+    [main_module: WeatherConditions.CLI]
   end
 end

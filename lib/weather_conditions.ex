@@ -1,2 +1,0 @@
-defmodule WeatherConditions do
-end
