@@ -1,6 +1,6 @@
 # WeatherConditions
 
-**TODO: Add description**
+**Fetch weather conditions for any existing US Aerodrome using its unique ICAO code
 
 ## Installation
 
