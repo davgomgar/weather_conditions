@@ -1,6 +1,6 @@
 # WeatherConditions
 
-**Fetch weather conditions for any existing US Aerodrome using its unique ICAO code
+**Fetch weather conditions for any existing US Aerodrome using its unique ICAO code**
 
 ## Installation
 
