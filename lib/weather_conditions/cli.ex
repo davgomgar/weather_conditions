@@ -1,11 +1,25 @@
 defmodule WeatherConditions.CLI do
 
+  @moduledoc """
+  This module handles command line parsing and dispatch the functions which will end up
+  displaying weather information of an american aerodrome
+  """
+
+  @doc"""
+  Application entry point
+  """
   def main(argv) do
     argv
     |> parse_args
     |> process
   end
 
+  @doc"""
+  `argv` can be -h or --help which will return `:help`
+  Otherwise it will be an icao code of an american aerodrome
+
+  Return the ICAO code passed as parameter or `:help` if help was given
+  """
   def parse_args(argv) do
     parse = OptionParser.parse(argv, switches: [help: :boolean], aliases: [h: :help])
     case parse do

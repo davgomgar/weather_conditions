@@ -1,5 +1,10 @@
 defmodule WeatherConditions.ICAO do
 
+ @moduledoc"""
+ This module fetch weather information from an existing web service and performs some transformations to the information
+ fetched from the web service (in XML format)
+ """
+
   #Xml parser
   require Record
   Record.defrecord :xmlElement, Record.extract(:xmlElement, from_lib: "xmerl/include/xmerl.hrl")
@@ -9,6 +14,11 @@ defmodule WeatherConditions.ICAO do
   @url_prefix Application.get_env(:weather_conditions, :service_url) 
   @xml_tags [:location, :latitude, :longitude, :time, :weather, :temperature, :pressure, :humidity, :wind, :dewpoint, :visibility]
 
+  @doc"""
+  Fetch weather information for a given ICAO code
+
+  Return a `Keyword` list containing weather information
+  """
   def fetch(icao_code) do
     icao_code
     |> generate_url
@@ -20,6 +30,9 @@ defmodule WeatherConditions.ICAO do
     "#{@url_prefix}/#{String.upcase(icao_code)}.xml"
   end
 
+  @doc"""
+  Fetches weather information from an existing web service
+  """
   def fetch_weather_info(url) do
     case HTTPoison.get url do
       {:ok, %{status_code: 200, body: body}} -> body
@@ -27,7 +40,11 @@ defmodule WeatherConditions.ICAO do
       {_, %{reason: reason}} -> raise ArgumentError, reason
     end
   end
+  @doc """
+  Process weather information in XML format.
 
+  Return `Keyword` list containing weather information
+  """
   def process_weather_info(info) do
     info
     |> scan_xml
@@ -36,13 +53,16 @@ defmodule WeatherConditions.ICAO do
 
   def scan_xml(xml_str) do
    :xmerl_scan.string(String.to_char_list(xml_str))
-  end
+   end
 
   def parse_xml({xml, _}) do
     @xml_tags
     |> Enum.reduce([], fn(current, total) -> Keyword.put(total, current, fetch_tag_value(xml, current))end)
   end
 
+  @doc """
+  Returns the value of some `tag` of the `xml` information passed as parameter
+  """
   def fetch_tag_value(xml, tag) do
     case tag do
       :location -> extract_current_tag_info xml, 'location'
